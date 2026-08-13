@@ -1,14 +1,25 @@
-import { cn } from "@/lib/utils";
-import { Inter, Geist } from "next/font/google";
+import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
-import QueryProvider from "@/providers/query-provider";
 import "./globals.css";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import QueryProvider from "@/providers/query-provider";
+
+import AuthProvider from "@/providers/auth-provider";
+import { Navbar } from "@/components/shared/navbar";
+
+const geistSans = Geist({
+   variable: "--font-geist-sans",
+   subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+   variable: "--font-geist-mono",
+   subsets: ["latin"],
+});
 
 export const metadata = {
    title: "FixItNow | Your Trusted Home Service Platform",
-   description: "Find trusted home service professionals and book quality services with FixItNow.",
+   description: "Book trusted home service professionals with FixItNow.",
 };
 
 export default function RootLayout({
@@ -17,16 +28,16 @@ export default function RootLayout({
    children: React.ReactNode;
 }>) {
    return (
-      <html lang="en" className={cn("h-full antialiased", "font-sans", geist.variable)}>
+      <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
          <body className="min-h-full flex flex-col">
             <QueryProvider>
-               <Toaster position="top-right" richColors />
+               <AuthProvider>
+                  <Toaster position="top-right" richColors />
 
-               {/* Navbar will be added here */}
+                  <Navbar />
 
-               {children}
-
-               {/* Footer will be added here */}
+                  <main className="flex-1">{children}</main>
+               </AuthProvider>
             </QueryProvider>
          </body>
       </html>
