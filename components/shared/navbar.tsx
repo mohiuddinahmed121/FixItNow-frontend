@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const navItems = [
@@ -35,12 +34,12 @@ export function Navbar() {
 
                {/* Auth Actions */}
                <div className="flex items-center gap-2">
-                  <Link href="/auth/login">
+                  <Link href="/login">
                      <Button variant="ghost">Login</Button>
                   </Link>
 
-                  <Link href="/auth/register">
-                     <Button>Get Started</Button>
+                  <Link href="/register">
+                     <Button>Register</Button>
                   </Link>
                </div>
             </div>

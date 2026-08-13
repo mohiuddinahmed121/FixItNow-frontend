@@ -5,7 +5,7 @@ import "./globals.css";
 import QueryProvider from "@/providers/query-provider";
 
 import AuthProvider from "@/providers/auth-provider";
-import { Navbar } from "@/components/shared/navbar";
+// import { Navbar } from "@/components/shared/navbar";
 
 const geistSans = Geist({
    variable: "--font-geist-sans",
@@ -22,7 +22,7 @@ export const metadata = {
    description: "Book trusted home service professionals with FixItNow.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
    children,
 }: Readonly<{
    children: React.ReactNode;
@@ -34,9 +34,7 @@ export default function RootLayout({
                <AuthProvider>
                   <Toaster position="top-right" richColors />
 
-                  <Navbar />
-
-                  <main className="flex-1">{children}</main>
+                  {children}
                </AuthProvider>
             </QueryProvider>
          </body>

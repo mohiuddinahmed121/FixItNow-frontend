@@ -1,13 +1,10 @@
 export type UserRole = "CUSTOMER" | "TECHNICIAN" | "ADMIN";
 
-export interface User {
-   id: string;
+export interface RegisterPayload {
    name: string;
    email: string;
-   role: UserRole;
-   activeStatus?: "ACTIVE" | "BLOCKED";
-   createdAt?: string;
-   updatedAt?: string;
+   password: string;
+   role: "CUSTOMER" | "TECHNICIAN";
 }
 
 export interface LoginPayload {
@@ -15,11 +12,12 @@ export interface LoginPayload {
    password: string;
 }
 
-export interface RegisterPayload {
+export interface User {
+   id: string;
    name: string;
    email: string;
-   password: string;
-   role: "CUSTOMER" | "TECHNICIAN";
+   role: UserRole;
+   activeStatus: string;
 }
 
 export interface AuthResponse {
