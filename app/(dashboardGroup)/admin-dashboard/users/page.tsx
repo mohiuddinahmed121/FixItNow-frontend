@@ -7,16 +7,41 @@ type User = {
    name: string;
    email: string;
    role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
-   activeStatus: "ACTIVE" | "INACTIVE";
+   activeStatus: "ACTIVE" | "BLOCKED";
    createdAt: string;
 };
 
 export default function UsersPage() {
    const [users, setUsers] = useState<User[]>([]);
    const [loading, setLoading] = useState(true);
+   const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+   const fetchUsers = async () => {
+      try {
+         const token = localStorage.getItem("fixitnow_access_token");
+
+         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/users`, {
+            headers: {
+               Authorization: `Bearer ${token}`,
+            },
+         });
+
+         const result = await response.json();
+
+         if (result.success) {
+            setUsers(result.data);
+         }
+      } catch (error) {
+         console.error("Failed to fetch users:", error);
+      } finally {
+         setLoading(false);
+      }
+   };
 
    useEffect(() => {
-      const fetchUsers = async () => {
+      let ignore = false;
+
+      const loadUsers = async () => {
          try {
             const token = localStorage.getItem("fixitnow_access_token");
 
@@ -28,18 +53,66 @@ export default function UsersPage() {
 
             const result = await response.json();
 
-            if (result.success) {
+            if (!ignore && result.success) {
                setUsers(result.data);
             }
          } catch (error) {
-            console.error("Failed to fetch users:", error);
+            if (!ignore) {
+               console.error("Failed to fetch users:", error);
+            }
          } finally {
-            setLoading(false);
+            if (!ignore) {
+               setLoading(false);
+            }
          }
       };
 
-      fetchUsers();
+      loadUsers();
+
+      return () => {
+         ignore = true;
+      };
    }, []);
+
+   const updateUserStatus = async (userId: string, activeStatus: "ACTIVE" | "BLOCKED") => {
+      try {
+         setUpdatingId(userId);
+
+         const token = localStorage.getItem("fixitnow_access_token");
+
+         const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/users/${userId}`, {
+            method: "PATCH",
+            headers: {
+               "Content-Type": "application/json",
+               Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+               activeStatus,
+            }),
+         });
+
+         const result = await response.json();
+
+         if (result.success) {
+            setUsers((prevUsers) =>
+               prevUsers.map((user) =>
+                  user.id === userId
+                     ? {
+                          ...user,
+                          activeStatus,
+                       }
+                     : user,
+               ),
+            );
+         } else {
+            console.error(result.message);
+         }
+      } catch (error) {
+         console.error("Failed to update user status:", error);
+      } finally {
+         setUpdatingId(null);
+      }
+   };
 
    if (loading) {
       return <div className="p-6">Loading users...</div>;
@@ -59,6 +132,7 @@ export default function UsersPage() {
                      <th className="px-4 py-3 text-left">Email</th>
                      <th className="px-4 py-3 text-left">Role</th>
                      <th className="px-4 py-3 text-left">Status</th>
+                     <th className="px-4 py-3 text-left">Action</th>
                      <th className="px-4 py-3 text-left">Created</th>
                   </tr>
                </thead>
@@ -72,7 +146,36 @@ export default function UsersPage() {
 
                         <td className="px-4 py-3">{user.role}</td>
 
-                        <td className="px-4 py-3">{user.activeStatus}</td>
+                        <td className="px-4 py-3">
+                           <span
+                              className={
+                                 user.activeStatus === "ACTIVE"
+                                    ? "font-medium text-green-600"
+                                    : "font-medium text-red-600"
+                              }
+                           >
+                              {user.activeStatus}
+                           </span>
+                        </td>
+
+                        <td className="px-4 py-3">
+                           <button
+                              disabled={updatingId === user.id}
+                              onClick={() =>
+                                 updateUserStatus(
+                                    user.id,
+                                    user.activeStatus === "ACTIVE" ? "BLOCKED" : "ACTIVE",
+                                 )
+                              }
+                              className="rounded-md border px-3 py-1 text-sm hover:bg-muted disabled:opacity-50"
+                           >
+                              {updatingId === user.id
+                                 ? "Updating..."
+                                 : user.activeStatus === "ACTIVE"
+                                   ? "Block"
+                                   : "Activate"}
+                           </button>
+                        </td>
 
                         <td className="px-4 py-3">
                            {new Date(user.createdAt).toLocaleDateString()}
