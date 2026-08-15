@@ -1,9 +1,40 @@
-import { LayoutDashboard, Users, CalendarCheck, Tags } from "lucide-react";
+import { CalendarDays, LayoutDashboard, Settings, Users, Wrench, Tags } from "lucide-react";
 
 export const sidebarMenuItems = {
+   CUSTOMER: [
+      {
+         label: "Dashboard",
+         href: "/dashboard",
+         icon: LayoutDashboard,
+      },
+      {
+         label: "My Bookings",
+         href: "/dashboard/bookings",
+         icon: CalendarDays,
+      },
+   ],
+
+   TECHNICIAN: [
+      {
+         label: "Dashboard",
+         href: "/technician-dashboard",
+         icon: LayoutDashboard,
+      },
+      {
+         label: "My Services",
+         href: "/technician-dashboard/services",
+         icon: Wrench,
+      },
+      {
+         label: "Bookings",
+         href: "/technician-dashboard/bookings",
+         icon: CalendarDays,
+      },
+   ],
+
    ADMIN: [
       {
-         label: "Admin Dashboard",
+         label: "Dashboard",
          href: "/admin-dashboard",
          icon: LayoutDashboard,
       },
@@ -15,7 +46,7 @@ export const sidebarMenuItems = {
       {
          label: "Bookings",
          href: "/admin-dashboard/bookings",
-         icon: CalendarCheck,
+         icon: CalendarDays,
       },
       {
          label: "Categories",

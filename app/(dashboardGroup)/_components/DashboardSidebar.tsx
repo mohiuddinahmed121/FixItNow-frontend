@@ -9,16 +9,31 @@ import {
    SidebarMenuButton,
    SidebarMenuItem,
 } from "@/components/ui/sidebar";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import { sidebarMenuItems } from "../_config/sidebarMenuItems";
 
+type UserRole = "CUSTOMER" | "TECHNICIAN" | "ADMIN";
+
 type DashboardSidebarProps = {
-   role: "ADMIN";
+   user: {
+      success: boolean;
+      data?: {
+         role: UserRole;
+      };
+   };
 };
 
-export default function DashboardSidebar({ role }: DashboardSidebarProps) {
+export default function DashboardSidebar({ user }: DashboardSidebarProps) {
    const pathname = usePathname();
+
+   const role = user?.data?.role;
+
+   if (!role) {
+      return null;
+   }
 
    const navItems = sidebarMenuItems[role];
 

@@ -3,14 +3,14 @@ import type { AuthResponse, LoginPayload, MeResponse, RegisterPayload } from "@/
 
 export const authService = {
    register: async (payload: RegisterPayload) => {
-      return api<AuthResponse>("/auth/register", {
+      return api<AuthResponse>("/register", {
          method: "POST",
          body: JSON.stringify(payload),
       });
    },
 
    login: async (payload: LoginPayload) => {
-      return api<AuthResponse>("/auth/login", {
+      return api<AuthResponse>("/login", {
          method: "POST",
          body: JSON.stringify(payload),
       });

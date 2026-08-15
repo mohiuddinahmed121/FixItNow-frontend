@@ -1,27 +1,43 @@
 "use client";
 
+import { getAdminBookings } from "@/services/admin";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type Booking = {
    id: string;
    status: string;
    createdAt: string;
+
    customer?: {
       name: string;
       email: string;
    };
+
    service?: {
-      name: string;
+      title?: string;
+      name?: string;
       category?: {
          name: string;
       };
+      technicianProfile?: {
+         user?: {
+            name: string;
+         };
+      };
    };
+
    payment?: {
       status: string;
+      amount?: number;
    };
+
+   review?: {
+      rating: number;
+   } | null;
 };
 
-export default function BookingsPage() {
+const BookingsPage = () => {
    const [bookings, setBookings] = useState<Booking[]>([]);
    const [loading, setLoading] = useState(true);
 
@@ -30,26 +46,20 @@ export default function BookingsPage() {
 
       const loadBookings = async () => {
          try {
-            const token = localStorage.getItem("fixitnow_access_token");
+            const result = await getAdminBookings();
 
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/bookings`, {
-               headers: {
-                  Authorization: `Bearer ${token}`,
-               },
-            });
+            if (ignore) return;
 
-            const result = await response.json();
-
-            if (!ignore && result.success) {
-               setBookings(result.data);
-            }
-
-            if (!ignore && !result.success) {
-               console.error("Backend Error:", result.message);
+            if (result.success) {
+               setBookings(result.data || []);
+            } else {
+               toast.error(result.message || "Failed to fetch bookings.");
             }
          } catch (error) {
             if (!ignore) {
                console.error("Failed to fetch bookings:", error);
+
+               toast.error("Failed to fetch bookings.");
             }
          } finally {
             if (!ignore) {
@@ -65,61 +75,81 @@ export default function BookingsPage() {
       };
    }, []);
 
-   if (loading) {
-      return <div className="p-6">Loading bookings...</div>;
-   }
-
    return (
-      <div className="p-6">
-         <h1 className="text-3xl font-bold">Bookings</h1>
+      <div className="p-8">
+         <div className="mb-8">
+            <h1 className="text-4xl font-bold">Bookings</h1>
 
-         <p className="mt-2 text-muted-foreground">Manage all customer bookings.</p>
+            <p className="mt-2 text-gray-500">Manage all service bookings.</p>
+         </div>
 
-         <div className="mt-6 overflow-x-auto rounded-lg border">
+         <div className="overflow-hidden rounded-lg border">
             <table className="w-full">
-               <thead className="border-b bg-muted/50">
-                  <tr>
-                     <th className="px-4 py-3 text-left">Customer</th>
-                     <th className="px-4 py-3 text-left">Service</th>
-                     <th className="px-4 py-3 text-left">Category</th>
-                     <th className="px-4 py-3 text-left">Status</th>
-                     <th className="px-4 py-3 text-left">Payment</th>
-                     <th className="px-4 py-3 text-left">Created</th>
+               <thead>
+                  <tr className="border-b bg-gray-50">
+                     <th className="px-5 py-4 text-left">Customer</th>
+
+                     <th className="px-5 py-4 text-left">Service</th>
+
+                     <th className="px-5 py-4 text-left">Technician</th>
+
+                     <th className="px-5 py-4 text-left">Status</th>
+
+                     <th className="px-5 py-4 text-left">Payment</th>
+
+                     <th className="px-5 py-4 text-left">Date</th>
                   </tr>
                </thead>
 
                <tbody>
-                  {bookings.map((booking) => (
-                     <tr key={booking.id} className="border-b">
-                        <td className="px-4 py-3">
-                           <div>
-                              <p className="font-medium">{booking.customer?.name ?? "N/A"}</p>
-                              <p className="text-sm text-muted-foreground">
-                                 {booking.customer?.email ?? "N/A"}
-                              </p>
-                           </div>
-                        </td>
-
-                        <td className="px-4 py-3">{booking.service?.name ?? "N/A"}</td>
-
-                        <td className="px-4 py-3">{booking.service?.category?.name ?? "N/A"}</td>
-
-                        <td className="px-4 py-3">{booking.status}</td>
-
-                        <td className="px-4 py-3">{booking.payment?.status ?? "N/A"}</td>
-
-                        <td className="px-4 py-3">
-                           {new Date(booking.createdAt).toLocaleDateString()}
+                  {loading ? (
+                     <tr>
+                        <td colSpan={6} className="px-5 py-10 text-center text-gray-500">
+                           Loading bookings...
                         </td>
                      </tr>
-                  ))}
+                  ) : bookings.length === 0 ? (
+                     <tr>
+                        <td colSpan={6} className="px-5 py-10 text-center text-gray-500">
+                           No bookings found.
+                        </td>
+                     </tr>
+                  ) : (
+                     bookings.map((booking) => (
+                        <tr key={booking.id} className="border-b last:border-0">
+                           <td className="px-5 py-4">
+                              <div>
+                                 <p className="font-medium">{booking.customer?.name || "N/A"}</p>
+
+                                 <p className="text-sm text-gray-500">
+                                    {booking.customer?.email || "N/A"}
+                                 </p>
+                              </div>
+                           </td>
+
+                           <td className="px-5 py-4">
+                              {booking.service?.title || booking.service?.name || "N/A"}
+                           </td>
+
+                           <td className="px-5 py-4">
+                              {booking.service?.technicianProfile?.user?.name || "N/A"}
+                           </td>
+
+                           <td className="px-5 py-4">{booking.status}</td>
+
+                           <td className="px-5 py-4">{booking.payment?.status || "N/A"}</td>
+
+                           <td className="px-5 py-4">
+                              {new Date(booking.createdAt).toLocaleDateString()}
+                           </td>
+                        </tr>
+                     ))
+                  )}
                </tbody>
             </table>
-
-            {bookings.length === 0 && (
-               <div className="p-6 text-center text-muted-foreground">No bookings found.</div>
-            )}
          </div>
       </div>
    );
-}
+};
+
+export default BookingsPage;

@@ -1,8 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-   cacheComponents: true,
-
    images: {
       remotePatterns: [
          {
@@ -12,15 +10,6 @@ const nextConfig: NextConfig = {
             hostname: "example.com",
          },
       ],
-   },
-
-   async rewrites() {
-      return [
-         {
-            source: "/api/:path*",
-            destination: "http://localhost:5000/api/:path*",
-         },
-      ];
    },
 };
 
