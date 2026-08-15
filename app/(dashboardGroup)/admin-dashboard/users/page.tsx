@@ -2,6 +2,7 @@
 
 import { getAdminUsers, updateAdminUserStatus } from "@/services/admin";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 type User = {
    id: string;
@@ -16,26 +17,37 @@ const UsersPage = () => {
    const [loading, setLoading] = useState(true);
    const [updatingId, setUpdatingId] = useState<string | null>(null);
 
-   const fetchUsers = async () => {
-      try {
-         setLoading(true);
-
-         const result = await getAdminUsers();
-
-         if (result.success) {
-            setUsers(result.data || []);
-         } else {
-            console.error("Failed to fetch users:", result.message);
-         }
-      } catch (error) {
-         console.error("Failed to fetch users:", error);
-      } finally {
-         setLoading(false);
-      }
-   };
-
    useEffect(() => {
-      fetchUsers();
+      let ignore = false;
+
+      const loadUsers = async () => {
+         try {
+            const result = await getAdminUsers();
+
+            if (ignore) return;
+
+            if (result.success) {
+               setUsers(result.data || []);
+            } else {
+               toast.error(result.message || "Failed to fetch users.");
+            }
+         } catch (error) {
+            if (ignore) return;
+
+            console.error("Failed to fetch users:", error);
+            toast.error("Failed to fetch users.");
+         } finally {
+            if (!ignore) {
+               setLoading(false);
+            }
+         }
+      };
+
+      loadUsers();
+
+      return () => {
+         ignore = true;
+      };
    }, []);
 
    const updateUserStatus = async (userId: string, activeStatus: "ACTIVE" | "BLOCKED") => {
@@ -55,11 +67,18 @@ const UsersPage = () => {
                      : user,
                ),
             );
+
+            toast.success(
+               activeStatus === "BLOCKED"
+                  ? "User blocked successfully."
+                  : "User activated successfully.",
+            );
          } else {
-            console.error("Failed to update user status:", result.message);
+            toast.error(result.message || "Failed to update user status.");
          }
       } catch (error) {
          console.error("Failed to update user status:", error);
+         toast.error("Failed to update user status.");
       } finally {
          setUpdatingId(null);
       }
