@@ -9,26 +9,16 @@ export default async function DashboardPage() {
    }
 
    return (
-      <div className="space-y-8 p-6">
-         <div>
+      <div className="p-6">
+         <div className="mb-8">
             <h1 className="text-3xl font-bold">Welcome, {user.data.name}!</h1>
 
             <p className="mt-2 text-muted-foreground">
-               Find trusted professionals for your home services.
+               Welcome to your FixItNow customer dashboard.
             </p>
          </div>
 
-         <div>
-            <div className="mb-5">
-               <h2 className="text-2xl font-semibold">Available Services</h2>
-
-               <p className="text-sm text-muted-foreground">
-                  Browse services offered by our technicians.
-               </p>
-            </div>
-
-            <ServiceList />
-         </div>
+         <ServiceList />
       </div>
    );
 }

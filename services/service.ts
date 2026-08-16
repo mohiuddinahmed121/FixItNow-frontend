@@ -5,27 +5,53 @@ export interface Service {
    title: string;
    description: string;
    price: number;
+   createdAt: string;
+   updatedAt: string;
+
    category: {
       id: string;
       name: string;
+      description: string | null;
+      createdAt: string;
+      updatedAt: string;
    };
+
    technicianProfile: {
       id: string;
+      bio: string | null;
+      experience: number;
+      skills: string[];
+      location: string;
+      hourlyRate: number;
+      isAvailable: boolean;
+      createdAt: string;
+      updatedAt: string;
+
       user: {
          id: string;
          name: string;
          email: string;
+         phone: string | null;
          role: "CUSTOMER" | "TECHNICIAN" | "ADMIN";
          activeStatus: string;
+         createdAt: string;
+         updatedAt: string;
       };
    };
 }
 
-interface ServicesResponse {
+export interface ServicesResponse {
    success: boolean;
    statusCode: number;
    message: string;
    data: Service[];
+}
+
+export interface SingleServiceResponse {
+   success: boolean;
+   statusCode: number;
+   message: string;
+   data: Service;
 }
 
 export const serviceService = {
@@ -36,12 +62,7 @@ export const serviceService = {
    },
 
    getSingleService: async (serviceId: string) => {
-      return api<{
-         success: boolean;
-         statusCode: number;
-         message: string;
-         data: Service;
-      }>(`/services/${serviceId}`, {
+      return api<SingleServiceResponse>(`/services/${serviceId}`, {
          method: "GET",
       });
    },
