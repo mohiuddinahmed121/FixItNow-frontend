@@ -1,9 +1,3 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-if (!API_URL) {
-   throw new Error("NEXT_PUBLIC_API_URL is not defined");
-}
-
 type ApiOptions = RequestInit & {
    token?: string;
 };
@@ -11,7 +5,7 @@ type ApiOptions = RequestInit & {
 export const api = async <T>(endpoint: string, options: ApiOptions = {}): Promise<T> => {
    const { token, headers, ...restOptions } = options;
 
-   const response = await fetch(`${API_URL}${endpoint}`, {
+   const response = await fetch(`/api${endpoint}`, {
       ...restOptions,
       credentials: "include",
       headers: {

@@ -4,9 +4,6 @@ import "./globals.css";
 
 import QueryProvider from "@/providers/query-provider";
 
-import AuthProvider from "@/providers/auth-provider";
-// import { Navbar } from "@/components/shared/navbar";
-
 const geistSans = Geist({
    variable: "--font-geist-sans",
    subsets: ["latin"],
@@ -22,7 +19,7 @@ export const metadata = {
    description: "Book trusted home service professionals with FixItNow.",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
    children,
 }: Readonly<{
    children: React.ReactNode;
@@ -31,11 +28,9 @@ export default async function RootLayout({
       <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
          <body className="min-h-full flex flex-col">
             <QueryProvider>
-               <AuthProvider>
-                  <Toaster position="top-right" richColors />
+               <Toaster position="top-right" richColors />
 
-                  {children}
-               </AuthProvider>
+               {children}
             </QueryProvider>
          </body>
       </html>

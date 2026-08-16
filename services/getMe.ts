@@ -7,7 +7,6 @@ export const getMe = async () => {
    const cookieStore = await cookies();
 
    let accessToken = cookieStore.get("accessToken")?.value || null;
-
    const refreshToken = cookieStore.get("refreshToken")?.value || null;
 
    if (!accessToken && !refreshToken) {
@@ -17,7 +16,7 @@ export const getMe = async () => {
       };
    }
 
-   // First try with the current access token
+   // 1. Try current access token
    if (accessToken) {
       const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/me`, {
          headers: {
@@ -33,7 +32,7 @@ export const getMe = async () => {
       }
    }
 
-   // Access token expired/invalid → try refresh token
+   // 2. Access token expired → use refresh token
    if (refreshToken) {
       const refreshResult = await getNewAccessToken();
 

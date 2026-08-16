@@ -3,51 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { useRegister } from "@/hooks/use-auth";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { toast } from "sonner";
+import { registerAction } from "../_actions/registerAction";
+import { useActionState } from "react";
+
+const initialState = null;
 
 export default function RegisterPage() {
-   const router = useRouter();
-   const registerMutation = useRegister();
-
-   useEffect(() => {
-      if (!registerMutation.isSuccess) return;
-
-      toast.success(registerMutation.data.message || "Registration successful!");
-
-      const role = registerMutation.data.data.user.role;
-
-      if (role === "CUSTOMER") {
-         router.push("/dashboard");
-      } else if (role === "TECHNICIAN") {
-         router.push("/technician-dashboard");
-      }
-   }, [registerMutation.isSuccess, registerMutation.data, router]);
-
-   useEffect(() => {
-      if (!registerMutation.isError) return;
-
-      toast.error(
-         registerMutation.error instanceof Error
-            ? registerMutation.error.message
-            : "Registration failed",
-      );
-   }, [registerMutation.isError, registerMutation.error]);
-
-   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-      event.preventDefault();
-
-      const formData = new FormData(event.currentTarget);
-
-      registerMutation.mutate({
-         name: formData.get("name") as string,
-         email: formData.get("email") as string,
-         password: formData.get("password") as string,
-         role: formData.get("role") as "CUSTOMER" | "TECHNICIAN",
-      });
-   };
+   const [state, formAction, isPending] = useActionState(registerAction, initialState);
 
    return (
       <div className="flex min-h-[calc(100vh-64px)] items-center justify-center px-4">
@@ -58,7 +20,11 @@ export default function RegisterPage() {
                <p className="text-muted-foreground">Join FixItNow and get started</p>
             </div>
 
-            <form onSubmit={handleSubmit}>
+            {state && !state.success && (
+               <p className="text-center text-sm text-red-500">{state.message}</p>
+            )}
+
+            <form action={formAction}>
                <Card className="space-y-4 p-5">
                   <Input name="name" type="text" placeholder="Enter your name" required />
 
@@ -88,8 +54,8 @@ export default function RegisterPage() {
                      </select>
                   </div>
 
-                  <Button type="submit" className="w-full" disabled={registerMutation.isPending}>
-                     {registerMutation.isPending ? "Creating Account..." : "Create Account"}
+                  <Button type="submit" className="w-full" disabled={isPending}>
+                     {isPending ? "Creating Account..." : "Create Account"}
                   </Button>
                </Card>
             </form>

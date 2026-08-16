@@ -5,7 +5,7 @@ import { cookies } from "next/headers";
 export const getNewAccessToken = async () => {
    const cookieStore = await cookies();
 
-   const refreshToken = cookieStore.get("refreshToken")?.value || null;
+   const refreshToken = cookieStore.get("refreshToken")?.value;
 
    if (!refreshToken) {
       return {
@@ -23,15 +23,6 @@ export const getNewAccessToken = async () => {
    });
 
    const result = await res.json();
-
-   if (result.success && result.data?.accessToken) {
-      cookieStore.set("accessToken", result.data.accessToken, {
-         httpOnly: true,
-         secure: process.env.NODE_ENV === "production",
-         maxAge: 60 * 60 * 24,
-         sameSite: "lax",
-      });
-   }
 
    return result;
 };
