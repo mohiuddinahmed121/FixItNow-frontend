@@ -54,6 +54,20 @@ export interface SingleServiceResponse {
    data: Service;
 }
 
+export interface CreateServicePayload {
+   title: string;
+   description: string;
+   price: number;
+   categoryId: string;
+}
+
+export interface CreateServiceResponse {
+   success: boolean;
+   statusCode: number;
+   message: string;
+   data: Service;
+}
+
 export const serviceService = {
    getAllServices: async () => {
       return api<ServicesResponse>("/services", {
@@ -64,6 +78,13 @@ export const serviceService = {
    getSingleService: async (serviceId: string) => {
       return api<SingleServiceResponse>(`/services/${serviceId}`, {
          method: "GET",
+      });
+   },
+
+   createService: async (payload: CreateServicePayload) => {
+      return api<CreateServiceResponse>("/services", {
+         method: "POST",
+         body: JSON.stringify(payload),
       });
    },
 };

@@ -21,6 +21,11 @@ export const sidebarMenuItems = {
          icon: LayoutDashboard,
       },
       {
+         label: "My Profile",
+         href: "/technician-dashboard/profile",
+         icon: Settings,
+      },
+      {
          label: "My Services",
          href: "/technician-dashboard/services",
          icon: Wrench,
