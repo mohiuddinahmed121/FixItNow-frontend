@@ -1,96 +1,76 @@
 "use client";
 
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 import { useCategories } from "@/hooks/use-categories";
 import { useService, useUpdateService } from "@/hooks/use-services";
 
-export default function EditServicePage() {
-   const params = useParams();
+interface EditServiceFormProps {
+   service: {
+      id: string;
+      title: string;
+      description: string;
+      price: number;
+      category: {
+         id: string;
+      };
+   };
+}
+
+function EditServiceForm({ service }: EditServiceFormProps) {
    const router = useRouter();
-
-   const serviceId = params.serviceId as string;
-
-   const {
-      data: serviceData,
-      isLoading: serviceLoading,
-      isError: serviceError,
-   } = useService(serviceId);
 
    const { data: categoryData, isLoading: categoriesLoading } = useCategories();
 
    const updateService = useUpdateService();
 
-   const [title, setTitle] = useState("");
-   const [description, setDescription] = useState("");
-   const [price, setPrice] = useState("");
-   const [categoryId, setCategoryId] = useState("");
+   const [title, setTitle] = useState(service.title);
+   const [description, setDescription] = useState(service.description);
+   const [price, setPrice] = useState(String(service.price));
+   const [categoryId, setCategoryId] = useState(service.category.id);
 
-   const service = serviceData?.data;
    const categories = categoryData?.data ?? [];
-
-   useEffect(() => {
-      if (!service) return;
-
-      setTitle(service.title);
-      setDescription(service.description);
-      setPrice(String(service.price));
-      setCategoryId(service.category.id);
-   }, [service]);
 
    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      if (!title || !description || !price || !categoryId) {
+      if (!title.trim() || !description.trim() || !price || !categoryId) {
+         toast.error("Please fill in all fields");
+         return;
+      }
+
+      const numericPrice = Number(price);
+
+      if (numericPrice <= 0) {
+         toast.error("Price must be greater than 0");
          return;
       }
 
       updateService.mutate(
          {
-            serviceId,
+            serviceId: service.id,
             payload: {
-               title,
-               description,
-               price: Number(price),
+               title: title.trim(),
+               description: description.trim(),
+               price: numericPrice,
                categoryId,
             },
          },
          {
             onSuccess: () => {
+               toast.success("Service updated successfully");
                router.push("/technician-dashboard/services");
+            },
+
+            onError: (error) => {
+               toast.error(error instanceof Error ? error.message : "Failed to update service");
             },
          },
       );
    };
-
-   if (serviceLoading) {
-      return (
-         <div className="p-6">
-            <p className="text-muted-foreground">Loading service...</p>
-         </div>
-      );
-   }
-
-   if (serviceError || !service) {
-      return (
-         <div className="p-6">
-            <div className="rounded-lg border p-6">
-               <h1 className="text-xl font-semibold">Service not found</h1>
-
-               <p className="mt-2 text-sm text-muted-foreground">We could not load this service.</p>
-
-               <Link
-                  href="/technician-dashboard/services"
-                  className="mt-4 inline-block rounded-md border px-4 py-2 text-sm"
-               >
-                  Back to My Services
-               </Link>
-            </div>
-         </div>
-      );
-   }
 
    return (
       <div className="max-w-2xl space-y-6 p-6">
@@ -180,14 +160,6 @@ export default function EditServicePage() {
                </select>
             </div>
 
-            {updateService.isError && (
-               <p className="text-sm text-red-500">
-                  {updateService.error instanceof Error
-                     ? updateService.error.message
-                     : "Failed to update service"}
-               </p>
-            )}
-
             <div className="flex gap-3">
                <Link
                   href="/technician-dashboard/services"
@@ -207,4 +179,48 @@ export default function EditServicePage() {
          </form>
       </div>
    );
+}
+
+export default function EditServicePage() {
+   const params = useParams();
+
+   const serviceId = params.serviceId as string;
+
+   const {
+      data: serviceData,
+      isLoading: serviceLoading,
+      isError: serviceError,
+      error,
+   } = useService(serviceId);
+
+   if (serviceLoading) {
+      return (
+         <div className="p-6">
+            <p className="text-muted-foreground">Loading service...</p>
+         </div>
+      );
+   }
+
+   if (serviceError || !serviceData?.data) {
+      return (
+         <div className="p-6">
+            <div className="rounded-lg border p-6">
+               <h1 className="text-xl font-semibold">Service not found</h1>
+
+               <p className="mt-2 text-sm text-muted-foreground">
+                  {error instanceof Error ? error.message : "We could not load this service."}
+               </p>
+
+               <Link
+                  href="/technician-dashboard/services"
+                  className="mt-4 inline-block rounded-md border px-4 py-2 text-sm"
+               >
+                  Back to My Services
+               </Link>
+            </div>
+         </div>
+      );
+   }
+
+   return <EditServiceForm service={serviceData.data} />;
 }

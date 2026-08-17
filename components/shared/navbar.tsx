@@ -42,13 +42,6 @@ export function Navbar({ user }: NavbarProps) {
                   >
                      Services
                   </Link>
-
-                  <Link
-                     href="/technicians"
-                     className="text-sm font-medium text-foreground transition-colors hover:text-primary"
-                  >
-                     Technicians
-                  </Link>
                </div>
 
                {/* Auth Actions */}
