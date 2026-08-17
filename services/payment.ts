@@ -5,7 +5,7 @@ export interface Payment {
    amount: number;
    transactionId: string;
    paymentIntentId: string;
-   method: "ONLINE" | "CASH";
+   method: "ONLINE";
    provider: "STRIPE";
    status: "PENDING" | "COMPLETED" | "FAILED";
    paidAt: string | null;

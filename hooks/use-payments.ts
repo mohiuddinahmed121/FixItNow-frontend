@@ -1,6 +1,6 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { paymentService } from "@/services/payment";
 
 export const useMyPayments = () => {
@@ -15,5 +15,27 @@ export const usePayment = (paymentId: string) => {
       queryKey: ["payment", paymentId],
       queryFn: () => paymentService.getSinglePayment(paymentId),
       enabled: !!paymentId,
+   });
+};
+
+export const useCreatePayment = () => {
+   const queryClient = useQueryClient();
+
+   return useMutation({
+      mutationFn: paymentService.createPayment,
+
+      onSuccess: (data) => {
+         queryClient.invalidateQueries({
+            queryKey: ["payments"],
+         });
+
+         queryClient.invalidateQueries({
+            queryKey: ["bookings"],
+         });
+
+         if (data.data.checkoutUrl) {
+            window.location.href = data.data.checkoutUrl;
+         }
+      },
    });
 };
