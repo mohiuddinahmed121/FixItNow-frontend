@@ -196,6 +196,14 @@ export default function BookingsPage() {
                         >
                            View Details
                         </Link>
+                        {booking.status === "COMPLETED" && (
+                           <Link
+                              href={`/dashboard/bookings/${booking.id}/review`}
+                              className="mt-3 block rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-primary-foreground"
+                           >
+                              Write Review
+                           </Link>
+                        )}
                      </div>
                   );
                })}

@@ -3,12 +3,21 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useService } from "@/hooks/use-services";
+import { useTechnicianReviews } from "@/hooks/use-reviews";
 
 export default function ServiceDetailsPage() {
    const params = useParams();
    const serviceId = params.serviceId as string;
 
    const { data, isLoading, isError, error } = useService(serviceId);
+
+   const technicianProfileId = data?.data?.technicianProfile?.id ?? "";
+
+   const {
+      data: reviewsData,
+      isLoading: reviewsLoading,
+      isError: reviewsError,
+   } = useTechnicianReviews(technicianProfileId);
 
    if (isLoading) {
       return (
@@ -43,14 +52,20 @@ export default function ServiceDetailsPage() {
 
    const service = data.data;
 
+   const reviews = reviewsData?.data?.reviews ?? [];
+   const averageRating = reviewsData?.data?.averageRating ?? 0;
+   const totalReviews = reviewsData?.data?.totalReviews ?? 0;
+
    return (
       <div className="space-y-6 p-6">
+         {/* Back */}
          <div>
             <Link href="/dashboard" className="text-sm text-muted-foreground hover:underline">
                ← Back to Services
             </Link>
          </div>
 
+         {/* Service Information */}
          <div className="rounded-lg border p-6 shadow-sm">
             <div className="flex flex-col gap-6 md:flex-row md:justify-between">
                <div className="space-y-4">
@@ -75,7 +90,9 @@ export default function ServiceDetailsPage() {
             </div>
          </div>
 
+         {/* Technician + Skills */}
          <div className="grid gap-6 md:grid-cols-2">
+            {/* Technician Information */}
             <div className="rounded-lg border p-6">
                <h2 className="mb-4 text-xl font-semibold">Technician Information</h2>
 
@@ -117,6 +134,7 @@ export default function ServiceDetailsPage() {
                </div>
             </div>
 
+            {/* Technician Skills */}
             <div className="rounded-lg border p-6">
                <h2 className="mb-4 text-xl font-semibold">Technician Skills</h2>
 
@@ -144,6 +162,7 @@ export default function ServiceDetailsPage() {
             </div>
          </div>
 
+         {/* Category */}
          <div className="rounded-lg border p-6">
             <h2 className="text-xl font-semibold">Category</h2>
 
@@ -154,6 +173,72 @@ export default function ServiceDetailsPage() {
             )}
          </div>
 
+         {/* Technician Reviews */}
+         <div className="rounded-lg border p-6">
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+               <h2 className="text-xl font-semibold">Technician Reviews</h2>
+
+               {!reviewsLoading && !reviewsError && (
+                  <div className="flex items-center gap-2">
+                     <span className="text-lg font-semibold">⭐ {averageRating.toFixed(1)}</span>
+
+                     <span className="text-sm text-muted-foreground">
+                        ({totalReviews} {totalReviews === 1 ? "review" : "reviews"})
+                     </span>
+                  </div>
+               )}
+            </div>
+
+            {reviewsLoading ? (
+               <div className="mt-5 rounded-md bg-muted p-4">
+                  <p className="text-sm text-muted-foreground">Loading reviews...</p>
+               </div>
+            ) : reviewsError ? (
+               <div className="mt-5 rounded-md border p-4">
+                  <p className="text-sm text-red-500">Failed to load reviews.</p>
+               </div>
+            ) : reviews.length === 0 ? (
+               <div className="mt-5 rounded-md border p-6 text-center">
+                  <p className="text-sm text-muted-foreground">No reviews yet.</p>
+
+                  <p className="mt-1 text-xs text-muted-foreground">
+                     Reviews will appear here after customers complete their services.
+                  </p>
+               </div>
+            ) : (
+               <div className="mt-5 space-y-4">
+                  {reviews.map((review) => (
+                     <div key={review.id} className="rounded-md border p-4">
+                        <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+                           <div>
+                              <p className="font-medium">{review.customer.name}</p>
+
+                              <div className="mt-1 flex items-center gap-2">
+                                 <span className="text-yellow-500">
+                                    {"★".repeat(review.rating)}
+                                 </span>
+
+                                 <span className="text-sm text-muted-foreground">
+                                    {review.rating}/5
+                                 </span>
+                              </div>
+                           </div>
+
+                           <p className="text-xs text-muted-foreground">
+                              {new Date(review.createdAt).toLocaleDateString()}
+                           </p>
+                        </div>
+
+                        {review.comment && (
+                           <p className="mt-3 text-sm text-muted-foreground">{review.comment}</p>
+                        )}
+                     </div>
+                  ))}
+               </div>
+            )}
+         </div>
+
+         {/* Booking Button */}
          {service.technicianProfile.isAvailable ? (
             <div className="flex justify-end">
                <Link
