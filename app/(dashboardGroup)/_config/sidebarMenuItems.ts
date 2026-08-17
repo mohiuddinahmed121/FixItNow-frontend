@@ -25,11 +25,11 @@ export const sidebarMenuItems = {
          href: "/technician-dashboard/profile",
          icon: Settings,
       },
-      // {
-      //    label: "My Services",
-      //    href: "/technician-dashboard/services",
-      //    icon: Wrench,
-      // },
+      {
+         label: "My Services",
+         href: "/technician-dashboard/services",
+         icon: Wrench,
+      },
       // {
       //    label: "Bookings",
       //    href: "/technician-dashboard/bookings",

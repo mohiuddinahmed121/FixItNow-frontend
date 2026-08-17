@@ -68,6 +68,27 @@ export interface CreateServiceResponse {
    data: Service;
 }
 
+export interface UpdateServicePayload {
+   title?: string;
+   description?: string;
+   price?: number;
+   categoryId?: string;
+}
+
+export interface UpdateServiceResponse {
+   success: boolean;
+   statusCode: number;
+   message: string;
+   data: Service;
+}
+
+export interface DeleteServiceResponse {
+   success: boolean;
+   statusCode: number;
+   message: string;
+   data: null;
+}
+
 export const serviceService = {
    getAllServices: async () => {
       return api<ServicesResponse>("/services", {
@@ -85,6 +106,25 @@ export const serviceService = {
       return api<CreateServiceResponse>("/services", {
          method: "POST",
          body: JSON.stringify(payload),
+      });
+   },
+
+   updateService: async ({
+      serviceId,
+      payload,
+   }: {
+      serviceId: string;
+      payload: UpdateServicePayload;
+   }) => {
+      return api<UpdateServiceResponse>(`/services/${serviceId}`, {
+         method: "PUT",
+         body: JSON.stringify(payload),
+      });
+   },
+
+   deleteService: async (serviceId: string) => {
+      return api<DeleteServiceResponse>(`/services/${serviceId}`, {
+         method: "DELETE",
       });
    },
 };
