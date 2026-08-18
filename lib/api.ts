@@ -5,7 +5,13 @@ type ApiOptions = RequestInit & {
 export const api = async <T>(endpoint: string, options: ApiOptions = {}): Promise<T> => {
    const { token, headers, ...restOptions } = options;
 
-   const response = await fetch(`/api${endpoint}`, {
+   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+   if (!baseUrl) {
+      throw new Error("NEXT_PUBLIC_API_URL is not configured");
+   }
+
+   const response = await fetch(`${baseUrl}${endpoint}`, {
       ...restOptions,
       credentials: "include",
       headers: {
