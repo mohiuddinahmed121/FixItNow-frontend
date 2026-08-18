@@ -111,7 +111,7 @@ export default function ServicesPage() {
 
                         {/* Button */}
                         <Link
-                           href={`/dashboard/services/${service.id}`}
+                           href={`/services/${service.id}`}
                            className="mt-6 rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-primary-foreground"
                         >
                            View Service
