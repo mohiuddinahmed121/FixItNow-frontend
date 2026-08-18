@@ -60,14 +60,12 @@ export default function ServiceDetailsPage() {
 
    return (
       <div className="space-y-6 p-6">
-         {/* Back */}
          <div>
             <Link href="/dashboard" className="text-sm text-muted-foreground hover:underline">
                ← Back to Services
             </Link>
          </div>
 
-         {/* Service Information */}
          <div className="rounded-lg border p-6 shadow-sm">
             <div className="flex flex-col gap-6 md:flex-row md:justify-between">
                <div className="space-y-4">
@@ -92,9 +90,7 @@ export default function ServiceDetailsPage() {
             </div>
          </div>
 
-         {/* Technician Information + Skills */}
          <div className="grid gap-6 md:grid-cols-2">
-            {/* Technician Information */}
             <div className="rounded-lg border p-6">
                <h2 className="mb-4 text-xl font-semibold">Technician Information</h2>
 
@@ -136,7 +132,6 @@ export default function ServiceDetailsPage() {
                </div>
             </div>
 
-            {/* Technician Skills */}
             <div className="rounded-lg border p-6">
                <h2 className="mb-4 text-xl font-semibold">Technician Skills</h2>
 
@@ -164,7 +159,6 @@ export default function ServiceDetailsPage() {
             </div>
          </div>
 
-         {/* Category */}
          <div className="rounded-lg border p-6">
             <h2 className="text-xl font-semibold">Category</h2>
 
@@ -175,7 +169,6 @@ export default function ServiceDetailsPage() {
             )}
          </div>
 
-         {/* Reviews */}
          <div className="rounded-lg border p-6">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                <div>
@@ -186,7 +179,6 @@ export default function ServiceDetailsPage() {
                   </p>
                </div>
 
-               {/* Rating Summary */}
                <div className="rounded-lg bg-muted px-5 py-4 text-center">
                   <p className="text-3xl font-bold">⭐ {averageRating.toFixed(1)}</p>
 
@@ -196,28 +188,24 @@ export default function ServiceDetailsPage() {
                </div>
             </div>
 
-            {/* Reviews Loading */}
             {reviewsLoading && (
                <div className="mt-6 rounded-md border p-4">
                   <p className="text-sm text-muted-foreground">Loading reviews...</p>
                </div>
             )}
 
-            {/* Reviews Error */}
             {reviewsError && (
                <div className="mt-6 rounded-md border p-4">
                   <p className="text-sm text-red-500">Failed to load reviews.</p>
                </div>
             )}
 
-            {/* No Reviews */}
             {!reviewsLoading && !reviewsError && reviews.length === 0 && (
                <div className="mt-6 rounded-md border p-6 text-center">
                   <p className="text-sm text-muted-foreground">No reviews yet.</p>
                </div>
             )}
 
-            {/* Reviews List */}
             {!reviewsLoading && !reviewsError && reviews.length > 0 && (
                <div className="mt-6 space-y-4">
                   {reviews.map((review) => (
@@ -255,7 +243,6 @@ export default function ServiceDetailsPage() {
             )}
          </div>
 
-         {/* Booking Button */}
          {service.technicianProfile.isAvailable ? (
             <div className="flex justify-end">
                <Link

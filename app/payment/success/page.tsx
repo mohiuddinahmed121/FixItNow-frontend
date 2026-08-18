@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { paymentService } from "@/services/payment";
 import { bookingService } from "@/services/booking";
 
-export default function PaymentSuccessPage() {
+function PaymentSuccessContent() {
    const searchParams = useSearchParams();
    const queryClient = useQueryClient();
 
@@ -88,17 +88,13 @@ export default function PaymentSuccessPage() {
    }
 
    const booking = bookingQuery.data?.data;
-
    const payments = paymentsQuery.data?.data ?? [];
-
    const payment = payments.find((item) => item.booking.id === bookingId);
 
    const isLoading = bookingQuery.isLoading || paymentsQuery.isLoading;
 
    const paymentCompleted = payment?.status === "COMPLETED";
-
    const bookingPaid = booking?.status === "PAID";
-
    const confirmed = paymentCompleted && bookingPaid;
 
    if (isLoading || !confirmed) {
@@ -174,5 +170,29 @@ export default function PaymentSuccessPage() {
             </div>
          </div>
       </div>
+   );
+}
+
+function PaymentSuccessFallback() {
+   return (
+      <div className="flex min-h-[70vh] items-center justify-center p-6">
+         <div className="w-full max-w-md rounded-lg border p-8 text-center shadow-sm">
+            <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-yellow-100 text-3xl">
+               ⏳
+            </div>
+
+            <h1 className="text-2xl font-bold">Loading Payment...</h1>
+
+            <p className="mt-3 text-muted-foreground">Please wait...</p>
+         </div>
+      </div>
+   );
+}
+
+export default function PaymentSuccessPage() {
+   return (
+      <Suspense fallback={<PaymentSuccessFallback />}>
+         <PaymentSuccessContent />
+      </Suspense>
    );
 }

@@ -39,7 +39,6 @@ export default function ServicesPage() {
    return (
       <div className="min-h-screen p-6">
          <div className="mx-auto max-w-6xl space-y-8">
-            {/* Header */}
             <div>
                <h1 className="text-4xl font-bold">Our Services</h1>
 
@@ -48,7 +47,6 @@ export default function ServicesPage() {
                </p>
             </div>
 
-            {/* Services */}
             {services.length === 0 ? (
                <div className="rounded-lg border p-10 text-center">
                   <h2 className="text-xl font-semibold">No services available</h2>
@@ -65,23 +63,18 @@ export default function ServicesPage() {
                         className="flex flex-col justify-between rounded-lg border p-6 shadow-sm transition hover:shadow-md"
                      >
                         <div>
-                           {/* Category */}
                            <span className="inline-block rounded-full bg-muted px-3 py-1 text-xs font-medium">
                               {service.category.name}
                            </span>
 
-                           {/* Title */}
                            <h2 className="mt-4 text-xl font-semibold">{service.title}</h2>
 
-                           {/* Description */}
                            <p className="mt-2 line-clamp-3 text-sm text-muted-foreground">
                               {service.description}
                            </p>
 
-                           {/* Price */}
                            <p className="mt-5 text-2xl font-bold">${service.price}</p>
 
-                           {/* Technician */}
                            <div className="mt-5 border-t pt-4">
                               <p className="text-sm font-medium">
                                  {service.technicianProfile.user.name}
@@ -109,7 +102,6 @@ export default function ServicesPage() {
                            </div>
                         </div>
 
-                        {/* Button */}
                         <Link
                            href={`/services/${service.id}`}
                            className="mt-6 rounded-md bg-primary px-4 py-2 text-center text-sm font-medium text-primary-foreground"

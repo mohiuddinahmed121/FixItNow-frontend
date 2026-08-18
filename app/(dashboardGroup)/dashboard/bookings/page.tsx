@@ -69,14 +69,12 @@ export default function BookingsPage() {
 
    return (
       <div className="space-y-6 p-6">
-         {/* Header */}
          <div>
             <h1 className="text-3xl font-bold">My Bookings</h1>
 
             <p className="mt-2 text-muted-foreground">View and manage your service bookings.</p>
          </div>
 
-         {/* No bookings */}
          {bookings.length === 0 ? (
             <div className="rounded-lg border p-8 text-center">
                <h2 className="text-xl font-semibold">No bookings yet</h2>
@@ -93,7 +91,6 @@ export default function BookingsPage() {
                </Link>
             </div>
          ) : (
-            /* Booking cards */
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                {bookings.map((booking) => {
                   const payment = getPaymentForBooking(booking.id);
@@ -104,7 +101,6 @@ export default function BookingsPage() {
 
                   return (
                      <div key={booking.id} className="rounded-lg border p-6 shadow-sm">
-                        {/* Title + Booking Status */}
                         <div className="flex items-start justify-between gap-4">
                            <h2 className="text-lg font-semibold">{booking.service.title}</h2>
 
@@ -127,7 +123,6 @@ export default function BookingsPage() {
                            </span>
                         </div>
 
-                        {/* Booking Information */}
                         <div className="mt-4 space-y-2 text-sm">
                            <p>
                               <span className="font-medium">Category:</span>{" "}
@@ -149,20 +144,16 @@ export default function BookingsPage() {
                            </p>
                         </div>
 
-                        {/* Payment Section */}
                         <div className="mt-5">
-                           {/* PAID booking */}
                            {isPaid ? (
                               <div className="rounded-md bg-green-50 px-4 py-3 text-center text-sm font-medium text-green-700">
                                  ✓ Payment Completed
                               </div>
-                           ) : /* Existing pending payment */
-                           payment?.status === "PENDING" ? (
+                           ) : payment?.status === "PENDING" ? (
                               <div className="rounded-md bg-yellow-50 px-4 py-3 text-center text-sm font-medium text-yellow-700">
                                  Payment Processing
                               </div>
-                           ) : /* Failed payment */
-                           payment?.status === "FAILED" ? (
+                           ) : payment?.status === "FAILED" ? (
                               <button
                                  type="button"
                                  onClick={() => handlePayNow(booking.id)}
@@ -171,8 +162,7 @@ export default function BookingsPage() {
                               >
                                  {isProcessing ? "Processing..." : "Try Payment Again"}
                               </button>
-                           ) : /* ACCEPTED and no payment */
-                           booking.status === "ACCEPTED" ? (
+                           ) : booking.status === "ACCEPTED" ? (
                               <button
                                  type="button"
                                  onClick={() => handlePayNow(booking.id)}
@@ -183,13 +173,11 @@ export default function BookingsPage() {
                               </button>
                            ) : null}
 
-                           {/* Payment error for this booking only */}
                            {paymentError?.bookingId === booking.id && (
                               <p className="mt-2 text-sm text-red-500">{paymentError.message}</p>
                            )}
                         </div>
 
-                        {/* View Details */}
                         <Link
                            href={`/dashboard/bookings/${booking.id}`}
                            className="mt-3 block rounded-md border px-4 py-2 text-center text-sm font-medium hover:bg-muted"

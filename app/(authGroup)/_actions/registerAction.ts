@@ -48,7 +48,6 @@ export const registerAction = async (prevState: RegisterState, formData: FormDat
 
    const cookieStore = await cookies();
 
-   // Access token
    cookieStore.set("accessToken", result.data.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -57,9 +56,6 @@ export const registerAction = async (prevState: RegisterState, formData: FormDat
       path: "/",
    });
 
-   // Backend sends refreshToken through Set-Cookie.
-   // Since the request is made from the Next.js server,
-   // forward that cookie to the browser.
    const setCookie =
       typeof res.headers.getSetCookie === "function"
          ? res.headers.getSetCookie().find((cookie) => cookie.startsWith("refreshToken="))
@@ -79,7 +75,6 @@ export const registerAction = async (prevState: RegisterState, formData: FormDat
       }
    }
 
-   // Role-based redirect
    if (result.data.user.role === "ADMIN") {
       redirect("/admin-dashboard");
    }

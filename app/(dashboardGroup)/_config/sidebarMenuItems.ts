@@ -30,11 +30,6 @@ export const sidebarMenuItems = {
          href: "/technician-dashboard/services",
          icon: Wrench,
       },
-      // {
-      //    label: "Bookings",
-      //    href: "/technician-dashboard/bookings",
-      //    icon: CalendarDays,
-      // },
    ],
 
    ADMIN: [

@@ -1,7 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
-import { getNewAccessToken } from "./refreshtoken";
+import { refreshAccessToken } from "./refreshtoken";
 
 export const getMe = async () => {
    const cookieStore = await cookies();
@@ -16,7 +16,6 @@ export const getMe = async () => {
       };
    }
 
-   // 1. Try current access token
    if (accessToken) {
       const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/me`, {
          headers: {
@@ -32,9 +31,8 @@ export const getMe = async () => {
       }
    }
 
-   // 2. Access token expired → use refresh token
    if (refreshToken) {
-      const refreshResult = await getNewAccessToken();
+      const refreshResult = await refreshAccessToken();
 
       if (refreshResult.success && refreshResult.data?.accessToken) {
          accessToken = refreshResult.data.accessToken;

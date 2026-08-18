@@ -22,12 +22,10 @@ export function Navbar({ user }: NavbarProps) {
       <nav className="border-b border-border bg-background">
          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 items-center justify-between">
-               {/* Logo */}
                <Link href="/" className="shrink-0">
                   <span className="text-2xl font-bold text-primary">FixItNow</span>
                </Link>
 
-               {/* Navigation */}
                <div className="hidden items-center gap-8 md:flex">
                   <Link
                      href="/"
@@ -44,7 +42,6 @@ export function Navbar({ user }: NavbarProps) {
                   </Link>
                </div>
 
-               {/* Auth Actions */}
                <div className="flex items-center gap-2">
                   {!isLoggedIn ? (
                      <>

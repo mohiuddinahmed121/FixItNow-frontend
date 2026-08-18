@@ -47,21 +47,14 @@ export const loginAction = async (
 
    const cookieStore = await cookies();
 
-   // Access token
    cookieStore.set("accessToken", result.data.accessToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 60 * 60, // 1 hour
+      maxAge: 60 * 60,
       path: "/",
    });
 
-   /*
-    * Backend sets refreshToken as an HTTP-only cookie.
-    * Since this request is made from the Next.js server,
-    * we need to forward that Set-Cookie value to the
-    * browser-side Next.js cookie.
-    */
    const setCookie = res.headers.get("set-cookie");
 
    if (setCookie) {
@@ -78,7 +71,6 @@ export const loginAction = async (
       }
    }
 
-   // Redirect if redirectTo exists
    if (
       redirectTo &&
       typeof redirectTo === "string" &&
@@ -88,7 +80,6 @@ export const loginAction = async (
       redirect(redirectTo);
    }
 
-   // Role-based redirect
    if (result.data.user.role === "ADMIN") {
       redirect("/admin-dashboard");
    }

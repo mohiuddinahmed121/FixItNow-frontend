@@ -59,7 +59,6 @@ export default function BookingDetailsPage() {
 
    return (
       <div className="space-y-6 p-6">
-         {/* Header */}
          <div>
             <Link
                href="/dashboard/bookings"
@@ -81,7 +80,6 @@ export default function BookingDetailsPage() {
             </div>
          </div>
 
-         {/* Service Information */}
          <div className="rounded-lg border p-6 shadow-sm">
             <h2 className="text-xl font-semibold">Service Information</h2>
 
@@ -114,7 +112,6 @@ export default function BookingDetailsPage() {
             </div>
          </div>
 
-         {/* Technician Information */}
          <div className="rounded-lg border p-6 shadow-sm">
             <h2 className="text-xl font-semibold">Technician Information</h2>
 
@@ -165,7 +162,6 @@ export default function BookingDetailsPage() {
             </div>
          </div>
 
-         {/* Booking Information */}
          <div className="rounded-lg border p-6 shadow-sm">
             <h2 className="text-xl font-semibold">Booking Information</h2>
 
@@ -200,7 +196,6 @@ export default function BookingDetailsPage() {
             </div>
          </div>
 
-         {/* Actions */}
          <div className="flex flex-wrap gap-3">
             {canCancel && (
                <button

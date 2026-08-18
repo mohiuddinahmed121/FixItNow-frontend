@@ -67,7 +67,6 @@ export default function TechnicianDashboardPage() {
 
    return (
       <div className="space-y-8 p-6">
-         {/* Header */}
          <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <div>
                <h1 className="text-3xl font-bold">Technician Dashboard</h1>
@@ -85,7 +84,6 @@ export default function TechnicianDashboardPage() {
             </Link>
          </div>
 
-         {/* Rating Summary */}
          <div className="rounded-lg border p-6 shadow-sm">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                <div>
@@ -105,7 +103,6 @@ export default function TechnicianDashboardPage() {
                </div>
             </div>
 
-            {/* Reviews */}
             {reviewsLoading ? (
                <div className="mt-6 rounded-md border p-4">
                   <p className="text-sm text-muted-foreground">Loading reviews...</p>
@@ -151,7 +148,6 @@ export default function TechnicianDashboardPage() {
             )}
          </div>
 
-         {/* Bookings */}
          <div>
             <div className="mb-4">
                <h2 className="text-2xl font-semibold">Customer Bookings</h2>
@@ -184,7 +180,6 @@ export default function TechnicianDashboardPage() {
                         </div>
 
                         <div className="mt-5 grid gap-4 md:grid-cols-2">
-                           {/* Customer */}
                            <div>
                               <h3 className="font-medium">Customer</h3>
 
@@ -197,7 +192,6 @@ export default function TechnicianDashboardPage() {
                               </div>
                            </div>
 
-                           {/* Booking */}
                            <div>
                               <h3 className="font-medium">Booking</h3>
 
@@ -211,9 +205,7 @@ export default function TechnicianDashboardPage() {
                            </div>
                         </div>
 
-                        {/* Actions */}
                         <div className="mt-5 flex flex-wrap gap-3">
-                           {/* REQUESTED */}
                            {booking.status === "REQUESTED" && (
                               <>
                                  <button
@@ -236,14 +228,12 @@ export default function TechnicianDashboardPage() {
                               </>
                            )}
 
-                           {/* ACCEPTED */}
                            {booking.status === "ACCEPTED" && (
                               <div className="rounded-md bg-yellow-50 px-4 py-2 text-sm font-medium text-yellow-700">
                                  Waiting for customer payment
                               </div>
                            )}
 
-                           {/* PAID */}
                            {booking.status === "PAID" && (
                               <button
                                  type="button"
@@ -255,7 +245,6 @@ export default function TechnicianDashboardPage() {
                               </button>
                            )}
 
-                           {/* IN_PROGRESS */}
                            {booking.status === "IN_PROGRESS" && (
                               <button
                                  type="button"
@@ -267,14 +256,12 @@ export default function TechnicianDashboardPage() {
                               </button>
                            )}
 
-                           {/* COMPLETED */}
                            {booking.status === "COMPLETED" && (
                               <div className="rounded-md bg-green-50 px-4 py-2 text-sm font-medium text-green-700">
                                  ✓ Service Completed
                               </div>
                            )}
 
-                           {/* DECLINED */}
                            {booking.status === "DECLINED" && (
                               <div className="rounded-md bg-red-50 px-4 py-2 text-sm font-medium text-red-700">
                                  Booking Declined

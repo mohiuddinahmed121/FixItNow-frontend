@@ -58,14 +58,12 @@ export default function ServiceDetailsPage() {
 
    return (
       <div className="space-y-6 p-6">
-         {/* Back */}
          <div>
             <Link href="/dashboard" className="text-sm text-muted-foreground hover:underline">
                ← Back to Services
             </Link>
          </div>
 
-         {/* Service Information */}
          <div className="rounded-lg border p-6 shadow-sm">
             <div className="flex flex-col gap-6 md:flex-row md:justify-between">
                <div className="space-y-4">
@@ -90,9 +88,7 @@ export default function ServiceDetailsPage() {
             </div>
          </div>
 
-         {/* Technician + Skills */}
          <div className="grid gap-6 md:grid-cols-2">
-            {/* Technician Information */}
             <div className="rounded-lg border p-6">
                <h2 className="mb-4 text-xl font-semibold">Technician Information</h2>
 
@@ -134,7 +130,6 @@ export default function ServiceDetailsPage() {
                </div>
             </div>
 
-            {/* Technician Skills */}
             <div className="rounded-lg border p-6">
                <h2 className="mb-4 text-xl font-semibold">Technician Skills</h2>
 
@@ -162,7 +157,6 @@ export default function ServiceDetailsPage() {
             </div>
          </div>
 
-         {/* Category */}
          <div className="rounded-lg border p-6">
             <h2 className="text-xl font-semibold">Category</h2>
 
@@ -173,7 +167,6 @@ export default function ServiceDetailsPage() {
             )}
          </div>
 
-         {/* Technician Reviews */}
          <div className="rounded-lg border p-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                <h2 className="text-xl font-semibold">Technician Reviews</h2>
@@ -238,7 +231,6 @@ export default function ServiceDetailsPage() {
             )}
          </div>
 
-         {/* Booking Button */}
          {service.technicianProfile.isAvailable ? (
             <div className="flex justify-end">
                <Link
