@@ -31,12 +31,16 @@ export const refreshAccessToken = async () => {
       };
    }
 
+   /*
+    * Save the new access token in the frontend's
+    * HttpOnly cookie.
+    */
    if (result.data?.accessToken) {
       cookieStore.set("accessToken", result.data.accessToken, {
          httpOnly: true,
          secure: process.env.NODE_ENV === "production",
          sameSite: "lax",
-         maxAge: 60 * 60,
+         maxAge: 60 * 60 * 24,
          path: "/",
       });
    }
