@@ -1,9 +1,12 @@
 import { Navbar } from "@/components/shared/navbar";
+import { getMe } from "@/services/getMe";
 
-export default function PublicGroupLayout({ children }: { children: React.ReactNode }) {
+export default async function PublicGroupLayout({ children }: { children: React.ReactNode }) {
+   const user = await getMe();
+
    return (
       <>
-         <Navbar />
+         <Navbar user={user} />
          {children}
       </>
    );
