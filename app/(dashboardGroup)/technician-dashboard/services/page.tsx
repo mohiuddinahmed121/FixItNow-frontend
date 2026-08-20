@@ -128,13 +128,6 @@ export default function MyServicesPage() {
 
                      <div className="mt-6 flex flex-wrap gap-2">
                         <Link
-                           href={`/dashboard/services/${service.id}`}
-                           className="rounded-md border px-3 py-2 text-sm font-medium"
-                        >
-                           View
-                        </Link>
-
-                        <Link
                            href={`/technician-dashboard/services/${service.id}/edit`}
                            className="rounded-md bg-primary px-3 py-2 text-sm font-medium text-primary-foreground"
                         >
