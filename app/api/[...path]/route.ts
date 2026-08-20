@@ -27,10 +27,8 @@ async function handler(
    try {
       const headers = new Headers(request.headers);
 
-      // Host frontend domain থেকে backend domain-এ যাবে না
       headers.delete("host");
 
-      // Next.js internal headers দরকার নেই
       headers.delete("connection");
 
       const body =

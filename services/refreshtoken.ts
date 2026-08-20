@@ -31,10 +31,6 @@ export const refreshAccessToken = async () => {
       };
    }
 
-   /*
-    * Save the new access token in the frontend's
-    * HttpOnly cookie.
-    */
    if (result.data?.accessToken) {
       cookieStore.set("accessToken", result.data.accessToken, {
          httpOnly: true,
