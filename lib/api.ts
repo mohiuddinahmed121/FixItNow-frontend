@@ -5,25 +5,36 @@ type ApiOptions = RequestInit & {
 export const api = async <T>(endpoint: string, options: ApiOptions = {}): Promise<T> => {
    const { token, headers, ...restOptions } = options;
 
-   const response = await fetch(`/api${endpoint}`, {
+   const normalizedEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+
+   const response = await fetch(`/api${normalizedEndpoint}`, {
       ...restOptions,
       credentials: "include",
       headers: {
          "Content-Type": "application/json",
+
          ...(token
             ? {
                  Authorization: `Bearer ${token}`,
               }
             : {}),
+
          ...headers,
       },
    });
 
-   const data = await response.json();
+   const contentType = response.headers.get("content-type");
+
+   const data = contentType?.includes("application/json")
+      ? await response.json()
+      : await response.text();
 
    if (!response.ok) {
-      throw new Error(data.message || "Something went wrong");
+      const message =
+         typeof data === "object" && data?.message ? data.message : "Something went wrong";
+
+      throw new Error(message);
    }
 
-   return data;
+   return data as T;
 };
