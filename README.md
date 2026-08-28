@@ -1,36 +1,52 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FixItNow
 
-## Getting Started
+FixItNow is a home service marketplace that connects customers with technicians for different home services.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Customer, Technician, and Admin roles
+- JWT authentication
+- Service browsing and management
+- Booking management
+- Technician booking status updates
+- Stripe online payment
+- Stripe webhook handling
+- Customer reviews
+- Role-based access control
+- Server-side validation and error handling
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+**Frontend:** Next.js, React, TypeScript, TanStack Query, Tailwind CSS
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Backend:** Node.js, Express.js, TypeScript, Prisma, PostgreSQL, JWT, Stripe
 
-## Learn More
+## User Roles
 
-To learn more about Next.js, take a look at the following resources:
+**Customer**
+- Browse services
+- Create and manage bookings
+- Make payments
+- Submit reviews
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**Technician**
+- Manage booking requests
+- Accept or decline bookings
+- Update booking status
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Admin**
+- Manage users
+- Manage services and categories
+- Manage the platform
 
-## Deploy on Vercel
+## Payment Flow
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Customer → Booking → Technician Accepts → Stripe Checkout → Stripe Webhook → Payment Completed → Booking Paid
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## Author
+
+Mohiuddin Ahmed
+
+Computer Science & Engineering  
+University of Asia Pacific
