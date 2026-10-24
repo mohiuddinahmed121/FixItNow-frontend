@@ -1,3 +1,4 @@
+import { Footer } from "@/components/shared/footer";
 import { Navbar } from "@/components/shared/navbar";
 import { getMe } from "@/services/getMe";
 
@@ -7,7 +8,8 @@ export default async function PublicGroupLayout({ children }: { children: React.
    return (
       <>
          <Navbar user={user} />
-         {children}
+         <div className="flex flex-1 flex-col">{children}</div>
+         <Footer />
       </>
    );
 }
