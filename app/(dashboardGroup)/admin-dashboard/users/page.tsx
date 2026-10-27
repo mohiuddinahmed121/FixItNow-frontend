@@ -89,13 +89,13 @@ const UsersPage = () => {
          <div className="mb-8">
             <h1 className="text-4xl font-bold">Users</h1>
 
-            <p className="mt-2 text-gray-500">Manage all registered users.</p>
+            <p className="mt-2 text-muted-foreground">Manage all registered users.</p>
          </div>
 
          <div className="overflow-hidden rounded-lg border">
             <table className="w-full">
                <thead>
-                  <tr className="border-b bg-gray-50">
+                  <tr className="border-b bg-muted">
                      <th className="px-5 py-4 text-left">Name</th>
 
                      <th className="px-5 py-4 text-left">Email</th>
@@ -111,13 +111,13 @@ const UsersPage = () => {
                <tbody>
                   {loading ? (
                      <tr>
-                        <td colSpan={5} className="px-5 py-10 text-center text-gray-500">
+                        <td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">
                            Loading users...
                         </td>
                      </tr>
                   ) : users.length === 0 ? (
                      <tr>
-                        <td colSpan={5} className="px-5 py-10 text-center text-gray-500">
+                        <td colSpan={5} className="px-5 py-10 text-center text-muted-foreground">
                            No users found.
                         </td>
                      </tr>

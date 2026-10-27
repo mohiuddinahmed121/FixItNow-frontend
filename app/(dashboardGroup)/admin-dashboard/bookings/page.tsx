@@ -80,13 +80,13 @@ const BookingsPage = () => {
          <div className="mb-8">
             <h1 className="text-4xl font-bold">Bookings</h1>
 
-            <p className="mt-2 text-gray-500">Manage all service bookings.</p>
+            <p className="mt-2 text-muted-foreground">Manage all service bookings.</p>
          </div>
 
          <div className="overflow-hidden rounded-lg border">
             <table className="w-full">
                <thead>
-                  <tr className="border-b bg-gray-50">
+                  <tr className="border-b bg-muted">
                      <th className="px-5 py-4 text-left">Customer</th>
 
                      <th className="px-5 py-4 text-left">Service</th>
@@ -104,13 +104,13 @@ const BookingsPage = () => {
                <tbody>
                   {loading ? (
                      <tr>
-                        <td colSpan={6} className="px-5 py-10 text-center text-gray-500">
+                        <td colSpan={6} className="px-5 py-10 text-center text-muted-foreground">
                            Loading bookings...
                         </td>
                      </tr>
                   ) : bookings.length === 0 ? (
                      <tr>
-                        <td colSpan={6} className="px-5 py-10 text-center text-gray-500">
+                        <td colSpan={6} className="px-5 py-10 text-center text-muted-foreground">
                            No bookings found.
                         </td>
                      </tr>
@@ -121,7 +121,7 @@ const BookingsPage = () => {
                               <div>
                                  <p className="font-medium">{booking.customer?.name || "N/A"}</p>
 
-                                 <p className="text-sm text-gray-500">
+                                 <p className="text-sm text-muted-foreground">
                                     {booking.customer?.email || "N/A"}
                                  </p>
                               </div>

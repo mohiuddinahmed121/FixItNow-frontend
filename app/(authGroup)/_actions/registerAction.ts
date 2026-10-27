@@ -24,23 +24,65 @@ export const registerAction = async (prevState: RegisterState, formData: FormDat
    const password = formData.get("password");
    const role = formData.get("role");
 
-   const payload = {
-      name,
-      email,
-      password,
-      role,
-   };
+   // const payload = {
+   //    name,
+   //    email,
+   //    password,
+   //    role,
+   // };
 
-   const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`, {
-      method: "POST",
-      headers: {
-         "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-      cache: "no-store",
-   });
+   // const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`, {
+   //    method: "POST",
+   //    headers: {
+   //       "Content-Type": "application/json",
+   //    },
+   //    body: JSON.stringify(payload),
+   //    cache: "no-store",
+   // });
 
-   const result = await res.json();
+   // const result = await res.json();
+
+   if (typeof name !== "string" || name.trim().length < 2) {
+      return { success: false, statusCode: 400, message: "Name must be at least 2 characters." };
+   }
+
+   if (typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      return { success: false, statusCode: 400, message: "Enter a valid email address." };
+   }
+
+   if (typeof password !== "string" || password.length < 8) {
+      return {
+         success: false,
+         statusCode: 400,
+         message: "Password must be at least 8 characters.",
+      };
+   }
+
+   if (role !== "CUSTOMER" && role !== "TECHNICIAN") {
+      return { success: false, statusCode: 400, message: "Choose a valid account type." };
+   }
+
+   let res: Response;
+   let result;
+
+   try {
+      res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify({ name: name.trim(), email: email.trim(), password, role }),
+         cache: "no-store",
+      });
+
+      result = await res.json();
+   } catch {
+      return {
+         success: false,
+         statusCode: 503,
+         message: "Unable to reach the server. Please try again in a moment.",
+      };
+   }
 
    if (!result.success) {
       return result;

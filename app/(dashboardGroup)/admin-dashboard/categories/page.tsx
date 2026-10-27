@@ -96,7 +96,7 @@ const CategoriesPage = () => {
          <div className="mb-8">
             <h1 className="text-4xl font-bold">Categories</h1>
 
-            <p className="mt-2 text-gray-500">Manage service categories.</p>
+            <p className="mt-2 text-muted-foreground">Manage service categories.</p>
          </div>
 
          <div className="mb-8 rounded-lg border p-6">
@@ -131,7 +131,7 @@ const CategoriesPage = () => {
                <button
                   type="submit"
                   disabled={creating}
-                  className="rounded-md bg-black px-5 py-2 text-white disabled:opacity-50"
+                  className="rounded-md bg-primary px-5 py-2 text-primary-foreground disabled:opacity-50"
                >
                   {creating ? "Creating..." : "Create Category"}
                </button>
@@ -141,7 +141,7 @@ const CategoriesPage = () => {
          <div className="overflow-hidden rounded-lg border">
             <table className="w-full">
                <thead>
-                  <tr className="border-b bg-gray-50">
+                  <tr className="border-b bg-muted">
                      <th className="px-5 py-4 text-left">Name</th>
 
                      <th className="px-5 py-4 text-left">Description</th>
@@ -151,13 +151,13 @@ const CategoriesPage = () => {
                <tbody>
                   {loading ? (
                      <tr>
-                        <td colSpan={2} className="px-5 py-10 text-center text-gray-500">
+                        <td colSpan={2} className="px-5 py-10 text-center text-muted-foreground">
                            Loading categories...
                         </td>
                      </tr>
                   ) : categories.length === 0 ? (
                      <tr>
-                        <td colSpan={2} className="px-5 py-10 text-center text-gray-500">
+                        <td colSpan={2} className="px-5 py-10 text-center text-muted-foreground">
                            No categories found.
                         </td>
                      </tr>
@@ -166,7 +166,7 @@ const CategoriesPage = () => {
                         <tr key={category.id} className="border-b last:border-0">
                            <td className="px-5 py-4 font-medium">{category.name}</td>
 
-                           <td className="px-5 py-4 text-gray-600">
+                           <td className="px-5 py-4 text-muted-foreground">
                               {category.description || "No description"}
                            </td>
                         </tr>

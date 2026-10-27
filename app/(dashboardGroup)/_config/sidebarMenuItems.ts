@@ -1,4 +1,12 @@
-import { CalendarDays, LayoutDashboard, Settings, Users, Wrench, Tags } from "lucide-react";
+import {
+   CalendarDays,
+   LayoutDashboard,
+   Settings,
+   UserCircle,
+   Users,
+   Wrench,
+   Tags,
+} from "lucide-react";
 
 export const sidebarMenuItems = {
    CUSTOMER: [
@@ -11,6 +19,11 @@ export const sidebarMenuItems = {
          label: "My Bookings",
          href: "/dashboard/bookings",
          icon: CalendarDays,
+      },
+      {
+         label: "My Profile",
+         href: "/dashboard/profile",
+         icon: UserCircle,
       },
    ],
 
@@ -52,6 +65,11 @@ export const sidebarMenuItems = {
          label: "Categories",
          href: "/admin-dashboard/categories",
          icon: Tags,
+      },
+      {
+         label: "Profile",
+         href: "/admin-dashboard/profile",
+         icon: UserCircle,
       },
    ],
 };

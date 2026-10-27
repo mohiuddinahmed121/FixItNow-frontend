@@ -31,15 +31,37 @@ export const loginAction = async (
       password,
    };
 
-   const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/login`, {
-      method: "POST",
-      headers: {
-         "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-   });
+   // const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/login`, {
+   //    method: "POST",
+   //    headers: {
+   //       "Content-Type": "application/json",
+   //    },
+   //    body: JSON.stringify(payload),
+   // });
 
-   const result = await res.json();
+   // const result = await res.json();
+
+   let res: Response;
+   let result;
+
+   try {
+      res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/login`, {
+         method: "POST",
+         headers: {
+            "Content-Type": "application/json",
+         },
+         body: JSON.stringify(payload),
+         cache: "no-store",
+      });
+
+      result = await res.json();
+   } catch {
+      return {
+         success: false,
+         statusCode: 503,
+         message: "Unable to reach the server. Please try again in a moment.",
+      };
+   }
 
    if (!result.success) {
       return result;
