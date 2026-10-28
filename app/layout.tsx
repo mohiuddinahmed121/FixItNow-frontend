@@ -40,6 +40,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import "./globals.css";
+import ChatWidget from "@/components/shared/ChatWidget";
 
 import QueryProvider from "@/providers/query-provider";
 
@@ -81,6 +82,7 @@ export default function RootLayout({
 
                {children}
             </QueryProvider>
+            <ChatWidget />
          </body>
       </html>
    );
