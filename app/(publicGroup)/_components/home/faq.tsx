@@ -32,7 +32,7 @@ const FAQS = [
 
 export function Faq() {
    return (
-      <section className="section-y">
+      <section id="faq" className="section-y">
          <div className="container-page">
             <SectionHeading
                eyebrow="FAQ"

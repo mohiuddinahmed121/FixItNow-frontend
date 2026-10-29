@@ -126,6 +126,9 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useTransition } from "react";
+import SearchSuggest from "@/components/shared/SearchSuggest";
+
+<SearchSuggest searchPath="/services" detailsPath="/services" />;
 
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { Button, buttonVariants } from "@/components/ui/button";
